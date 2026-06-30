@@ -1,0 +1,397 @@
+#define OLED_SOFT_BUFFER_64     // Буфер на стороне МК
+#include <GyverOLED.h>          // Библиотека дисплея
+GyverOLED<SSD1306_128x64, OLED_BUFFER> oled;
+void Launch();
+void Settings();
+void BetterCallMe();
+void Calibration();
+void Sound();
+void F25ml();
+void F50ml();
+void Logo();
+void Mods();
+void Loud();
+#include <EncButton2.h>
+EncButton2<EB_BTN> btn[4];
+EncButton2<EB_BTN> back(INPUT_PULLUP, 2);
+EncButton2<EB_BTN> ok(INPUT_PULLUP, 3);
+EncButton2<EB_BTN> down(INPUT_PULLUP, 4);
+EncButton2<EB_BTN> up(INPUT_PULLUP, 5);
+
+const uint8_t bitmap_127x27[] PROGMEM = {
+  0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0x06, 0x04, 0x84, 0x68, 0x18, 0x10, 0x30, 0x20, 0x40, 0xC0, 0x80, 0x80, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xC0, 0x60, 0x18, 0x0E, 0x03, 0x02, 0x02, 0x04, 0x04, 0x08, 0x18, 0x13, 0x32, 0x24, 0x44, 0xC8, 0x98, 0x90, 0x30, 0x20, 0x40, 0xC0, 0x00, 0x00, 0x00, 0xC0, 0x30, 0x1C, 0x06, 0x03, 0x02, 0x06, 0x04, 0x0C, 0x08, 0x10, 0x10, 0x08, 0x0C, 0x04, 0x06, 0x02, 0x03, 0x06, 0x1C, 0x30, 0xC0, 0x80, 0x00, 0x00, 0xC0, 0x40, 0x20, 0x20, 0x90, 0x90, 0xC8, 0x4C, 0x24, 0x26, 0x12, 0x10, 0x08, 0x0C, 0x04, 0x06, 0x02, 0x00, 0x00, 0x00, 0x00, 0x02, 0x0C, 0x38, 0x60, 0x80, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 
+  0x00, 0x00, 0x00, 0x00, 0x00, 0x80, 0xE0, 0x30, 0x0C, 0x0F, 0x19, 0x70, 0xC0, 0x00, 0x00, 0x00, 0x00, 0x00, 0x80, 0xC1, 0x31, 0x1E, 0x86, 0x60, 0x30, 0x0C, 0x03, 0x01, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xC0, 0x60, 0x18, 0x86, 0xE3, 0x30, 0x0C, 0xC7, 0x61, 0x18, 0x0E, 0x03, 0x01, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x03, 0x0E, 0x18, 0x60, 0xC7, 0x0C, 0x30, 0xE1, 0x87, 0x1C, 0x30, 0xC0, 0x80, 0x00, 0x00, 0x80, 0xC0, 0x40, 0x60, 0x20, 0x10, 0x10, 0x08, 0x0C, 0x04, 0x06, 0x00, 0x00, 0x01, 0x07, 0x0C, 0x30, 0xC0, 0x80, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 
+  0x00, 0xC0, 0x30, 0x1C, 0x06, 0x01, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x03, 0x0C, 0x38, 0x78, 0x86, 0x03, 0x00, 0x04, 0x0E, 0x09, 0x18, 0x10, 0x20, 0x60, 0x40, 0xC0, 0x80, 0x00, 0x00, 0x00, 0x00, 0x00, 0x80, 0x60, 0x38, 0x0C, 0x03, 0x01, 0x08, 0x1E, 0x31, 0x20, 0x40, 0x43, 0x81, 0x80, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x80, 0x81, 0x43, 0x40, 0x20, 0x21, 0x17, 0x1C, 0x00, 0x03, 0x07, 0x19, 0x60, 0xC0, 0x00, 0x00, 0x00, 0x00, 0x00, 0x80, 0x80, 0x40, 0x60, 0x20, 0x30, 0x10, 0x08, 0x08, 0x00, 0x00, 0x03, 0x06, 0x18, 0x70, 0xC0, 0x00, 0x00, 0x00, 0x00, 0x00, 0x80, 0x80, 0x40, 0x60, 0x20, 0x30, 0x10, 0x18, 0x08, 0x08, 
+  0x03, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x01, 0x03, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x01, 0x01, 0x02, 0x02, 0x03, 0x01, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x01, 0x01, 0x03, 0x02, 0x04, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0x03, 0x01, 0x01, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x01, 0x03, 0x06, 0x02, 0x03, 0x01, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x03, 0x06, 0x02, 0x03, 0x01, 0x01, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 
+};
+const uint8_t bitmap_26x26_min[] PROGMEM = {
+  0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 
+  0x00, 0x00, 0x78, 0xFC, 0xFE, 0xFE, 0xFE, 0xFE, 0xFE, 0xFE, 0xFE, 0xFE, 0xFE, 0xFE, 0xFE, 0xFE, 0xFE, 0xFE, 0xFE, 0xFE, 0xFE, 0xFE, 0xFC, 0x78, 0x00, 0x00, 
+  0x00, 0x00, 0x00, 0x00, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x00, 0x00, 0x00, 0x00, 
+  0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 
+};
+const uint8_t bitmap_26x26_plus[] PROGMEM = {
+  0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xFC, 0xFC, 0xFC, 0xFC, 0xFC, 0xFC, 0xFC, 0xFC, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 
+  0x00, 0x00, 0xFE, 0xFE, 0xFE, 0xFE, 0xFE, 0xFE, 0xFE, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFE, 0xFE, 0xFE, 0xFE, 0xFE, 0xFE, 0xFE, 0x00, 0x00, 
+  0x00, 0x00, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x00, 0x00, 
+  0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 
+};
+const uint8_t bitmap_16x19[] PROGMEM = {
+  0xFF, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xFF, 
+  0xFF, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xFF, 
+  0x03, 0x06, 0x04, 0x04, 0x04, 0x04, 0x04, 0x04, 0x04, 0x04, 0x04, 0x04, 0x04, 0x04, 0x04, 0x07, 
+};
+#include <EEPROM.h>
+  byte proc;
+  bool calib;
+  bool actio;
+  byte proc2;
+  bool calib2;
+  static int8_t pointer3 = 0; // Переменная указатель
+
+#define ITEMS 5
+#define ITEMS2 3
+#define ITEMS3 3
+#define ITEMS4 3
+
+#define EB_DEB 50       // дебаунс кнопки, мс
+#define EB_CLICK 50// таймаут накликивания кнопки, мс
+
+const uint8_t ptr_bmp[] PROGMEM = {
+  0xF0, 0xF0, 0xF0, 0xF0, 0xFC, 0xF8, 0xF8, 0xF0, 0xF0, 0xE0, 0x40, 
+  0x01, 0x01, 0x01, 0x01, 0x07, 0x03, 0x03, 0x01, 0x00, 0x00, 0x00, 
+};
+byte ay = 64;
+
+void setup() {
+  oled.init();
+  oled.clear();           // Инциализация дисплея
+  oled.setContrast(255); // Макс. яркость 
+  Logo();
+  oled.setScale(2);
+  EEPROM.get(1, proc2);
+  EEPROM.get(0, proc);
+  }
+
+void loop() {
+  bool change = 0;
+  static int8_t pointer = 0; // Переменная указатель
+  /* Кнопки */
+  up.tick();                 // Опрос кнопок
+  down.tick();
+  ok.tick();
+
+  if (up.press() or up.hold()) {                // Если кнопку нажали или удерживают
+    pointer = constrain(pointer - 2, 0, ITEMS - 1); // Двигаем указатель в пределах дисплея
+    change = 1;
+  }
+
+  if (down.press() or down.hold()) {
+    pointer = constrain(pointer + 2, 0, ITEMS - 1);
+    change = 1;
+  }
+
+  if (ok.press()) {   // Нажатие на ОК - переход в пункт меню
+    switch (pointer) {  // По номеру указателей располагаем вложенные функции (можно вложенные меню)
+      case 0: Launch(); break;  // По нажатию на ОК при наведении на 0й пункт вызвать функцию
+      case 2: Settings(); break;
+      case 4: BetterCallMe(); break;
+    }
+  }
+
+  /* меню */
+  oled.clear();           // Очищаем буфер
+  oled.home();            // Курсор в левый верхний угол
+  oled.print              // Вывод всех пунктов
+  (F(
+     " Запуск\n\r"   // Не забываем про '\n' - символ переноса строки
+     " Настройки\n\r"
+     " Контакты"
+   ));
+  printPointer(pointer);  // Вывод указателя
+  oled.update();          // Выводим кадр на дисплей
+  }
+void printPointer(uint8_t pointer) {
+  // Указатель в начале строки
+  oled.setCursor(0, pointer);
+
+  oled.drawBitmap(0, pointer * 8, ptr_bmp, 11, 13);
+}
+
+/* пример вложеной функции, которую можно вызвать из под меню */
+void Launch(void) {
+  oled.clear();
+  oled.home();
+  oled.print(F("11"));
+  oled.update();
+  while (1) {
+    back.tick();
+    if (back.press()) return; // return возвращает нас в предыдущее меню
+  }
+}
+void Settings(void) { 
+  for (;;) {
+  bool change2 = 0;
+  static int8_t pointer2 = 0; // Переменная указатель
+  /* Кнопки */
+  up.tick();                 // Опрос кнопок
+  down.tick();
+  ok.tick();
+
+  if (up.press() or up.hold()) {                // Если кнопку нажали или удерживают
+    pointer2 = constrain(pointer2 - 2, 0, ITEMS2 - 1); // Двигаем указатель в пределах дисплея
+    change2 = 1;
+  }
+
+  if (down.press() or down.hold()) {
+    pointer2 = constrain(pointer2 + 2, 0, ITEMS2 - 1);
+    change2 = 1;
+  }
+
+  if (ok.press()) {   // Нажатие на ОК - переход в пункт меню
+    switch (pointer2) {  // По номеру указателей располагаем вложенные функции (можно вложенные меню)
+      case 0: Calibration(); break;  // По нажатию на ОК при наведении на 0й пункт вызвать функцию
+      case 2: Sound(); break;
+    }
+  }
+  /* меню */
+  oled.clear();           // Очищаем буфер
+  oled.home();            // Курсор в левый верхний угол
+  oled.print              // Вывод всех пунктов
+  (F(
+     " Процент\n\r"   // Не забываем про '\n' - символ переноса строки
+     " Звук"
+   ));
+  printPointer2(pointer2);  // Вывод указателя
+  oled.update();          // Выводим кадр на дисплей
+  back.tick();
+  if (back.press()) return; // return возвращает нас в предыдущее меню
+}
+}
+void printPointer2(uint8_t pointer2) {
+  // Указатель в начале строки
+  oled.setCursor(0, pointer2);
+  oled.drawBitmap(0, pointer2 * 8, ptr_bmp, 11, 13);
+}
+
+void BetterCallMe(void) {
+  oled.setScale(1);
+  oled.clear();
+  oled.home();
+  oled.print(F(
+    "Почта для обратной \n\r"
+    "связи \n\r"
+    "\n\r"
+    "Rozmusel@yandex.ru"
+  ));
+  oled.update();
+  while (1) {
+    back.tick();
+    if (back.press()){
+    oled.setScale(2);
+    return; // return возвращает нас в предыдущее меню
+    }
+  }
+}
+void Calibration(void) {
+  for (;;) {
+  bool change3 = 0;
+  /* Кнопки */
+  up.tick();                 // Опрос кнопок
+  down.tick();
+  ok.tick();
+
+  if (up.press() or up.hold()) {                // Если кнопку нажали или удерживают
+    pointer3 = constrain(pointer3 - 3, 0, ITEMS3 - 1); // Двигаем указатель в пределах дисплея
+    change3 = 1;
+  }
+
+  if (down.press() or down.hold()) {
+    pointer3 = constrain(pointer3 + 2, 0, ITEMS3 - 1);
+    change3 = 1;
+  }
+
+  if (ok.press()) {   // Нажатие на ОК - переход в пункт меню
+    switch (pointer3) {  // По номеру указателей располагаем вложенные функции (можно вложенные меню)
+      case 0: F50ml(); break;  // По нажатию на ОК при наведении на 0й пункт вызвать функцию
+      case 2: F25ml(); break;
+    }
+  }
+  /* меню */
+  oled.clear();           // Очищаем буфер
+  oled.home();            // Курсор в левый верхний угол
+  oled.print              // Вывод всех пунктов
+  (F(
+     " 50мл\n\r"   // Не забываем про '\n' - символ переноса строки
+     " 25мл"
+   ));
+  printPointer3(pointer3);  // Вывод указателя
+  oled.update();          // Выводим кадр на дисплей
+  back.tick();
+  if (back.press()) return; // return возвращает нас в предыдущее меню
+}
+}
+void printPointer3(uint8_t pointer3) {
+  // Указатель в начале строки
+  oled.setCursor(0, pointer3);
+  oled.drawBitmap(0, pointer3 * 8, ptr_bmp, 11, 13);
+}
+void F25ml(void){
+  oled.setScale(1);
+  oled.clear();
+  oled.home();
+  oled.update();oled.print(F(
+  "        Колба 25 мл\n\r"
+  "\n\r"
+  "\n\r"
+  "        Заполнение\n\r"
+  "\n\r"
+  "            "
+  ));
+  oled.print(proc2);
+  oled.print("%");
+  oled.drawBitmap(4, 34, bitmap_26x26_min, 26, 26);
+  oled.drawBitmap(4, 4, bitmap_26x26_plus, 26, 26);
+  oled.update();
+ for (;;) {
+  up.tick();                 // Опрос кнопок
+  down.tick();
+  ok.tick();
+  back.tick();
+if(up.press()){oled.roundRect(2, 2, 32, 32, OLED_CLEAR);  oled.drawBitmap(4, 4, bitmap_26x26_plus, 26, 26); oled.roundRect(2, 32, 32, 62, OLED_STROKE); oled.update();calib2 = 1;}
+if(down.press()){oled.roundRect(2, 32, 32, 62, OLED_CLEAR); oled.drawBitmap(4, 34, bitmap_26x26_min, 26, 26); oled.roundRect(2, 2, 32, 32,OLED_STROKE); oled.update();calib2 = 0;}
+if(ok.press()&&proc2>=20&&proc2<=100){actio = 1;if(calib2 == 0&&proc2<100){proc2=proc2+5;}if(calib2 == 1&&proc2>20){proc2=proc2-5;} 
+oled.setCursorXY(71, 40); // курсор в (пиксель X, пиксель Y)
+  oled.print("    ");
+ oled.setCursorXY(71, 40); // курсор в (пиксель X, пиксель Y)
+  oled.print(proc2);
+  oled.print("%");
+  oled.update();
+  } 
+    if (back.press()){
+       EEPROM.update(1, proc2);
+       oled.setScale(2);
+      return; // return возвращает нас в предыдущее меню
+    }
+  }
+}
+void F50ml(void) {
+  oled.setScale(1);
+  oled.clear();
+  oled.home();
+  oled.update();oled.print(F(
+  "        Колба 50 мл\n\r"
+  "\n\r"
+  "\n\r"
+  "        Заполнение\n\r"
+  "\n\r"
+  "            "
+  ));
+  oled.print(proc);
+  oled.print("%");
+  oled.drawBitmap(4, 34, bitmap_26x26_min, 26, 26);
+  oled.drawBitmap(4, 4, bitmap_26x26_plus, 26, 26);
+  oled.update();
+ for (;;) {
+  up.tick();                 // Опрос кнопок
+  down.tick();
+  ok.tick();
+  back.tick();
+if(up.press()){oled.roundRect(2, 2, 32, 32, OLED_CLEAR);  oled.drawBitmap(4, 4, bitmap_26x26_plus, 26, 26); oled.roundRect(2, 32, 32, 62, OLED_STROKE); oled.update();calib = 1;}
+if(down.press()){oled.roundRect(2, 32, 32, 62, OLED_CLEAR); oled.drawBitmap(4, 34, bitmap_26x26_min, 26, 26); oled.roundRect(2, 2, 32, 32,OLED_STROKE); oled.update();calib = 0;}
+if(ok.press()&&proc>=20&&proc<=100){actio = 1;if(calib == 0&&proc<100){proc=proc+5;}if(calib == 1&&proc>20){proc=proc-5;} 
+oled.setCursorXY(71, 40); // курсор в (пиксель X, пиксель Y)
+  oled.print("    ");
+ oled.setCursorXY(71, 40); // курсор в (пиксель X, пиксель Y)
+  oled.print(proc);
+  oled.print("%");
+  oled.update();
+  } 
+    if (back.press()){
+       EEPROM.update(0, proc);
+       oled.setScale(2);
+      return; // return возвращает нас в предыдущее меню
+    }
+  }
+}
+void Sound(void) {
+  for (;;) {
+  bool change4 = 0;
+  static int8_t pointer4 = 0; // Переменная указатель
+  /* Кнопки */
+  up.tick();                 // Опрос кнопок
+  down.tick();
+  ok.tick();
+  back.tick();
+
+  if (up.press() or up.hold()) {                // Если кнопку нажали или удерживают
+    pointer4 = constrain(pointer4 - 2, 0, ITEMS4 - 1); // Двигаем указатель в пределах дисплея
+    change4 = 1;
+  }
+
+  if (down.press() or down.hold()) {
+    pointer4 = constrain(pointer4 + 2, 0, ITEMS4 - 1);
+    change4 = 1;
+  }
+
+  if (ok.press()) {   // Нажатие на ОК - переход в пункт меню
+    switch (pointer4) {  // По номеру указателей располагаем вложенные функции (можно вложенные меню)
+      case 0: Loud(); break;  // По нажатию на ОК при наведении на 0й пункт вызвать функцию
+      case 2: Mods(); break;
+    }
+  }
+  if (back.press()) return; // return возвращает нас в предыдущее меню
+
+  /* меню */
+  oled.clear();           // Очищаем буфер
+  oled.home();            // Курсор в левый верхний угол
+  oled.print              // Вывод всех пунктов
+  (F(
+     " Громкость\n\r"   // Не забываем про '\n' - символ переноса строки
+     " Моды"
+   ));
+  printPointer4(pointer4);  // Вывод указателя
+  oled.update();          // Выводим кадр на дисплей
+  }
+}
+void printPointer4(uint8_t pointer4) {
+  // Указатель в начале строки
+  oled.setCursor(0, pointer4);
+
+  oled.drawBitmap(0, pointer4 * 8, ptr_bmp, 11, 13);
+}
+void Loud(void) {
+  oled.clear();
+  oled.home();
+  oled.print(F("Звук"));
+  oled.update();
+  while (1) {
+    back.tick();
+    if (back.press()) return; // return возвращает нас в предыдущее меню
+  }
+}
+void Mods(void) {
+  oled.clear();
+  oled.home();
+  oled.print(F("Моды"));
+  oled.update();
+  while (1) {
+    back.tick();
+    if (back.press()) return; // return возвращает нас в предыдущее меню
+  }
+}
+void Logo(void) {  
+  oled.drawBitmap(1, 19, bitmap_127x27, 127, 27);
+  oled.update();
+  delay(1000);
+
+  for(;;){
+    ay=ay-2;
+    oled.drawBitmap(56, ay, bitmap_16x19, 16, 19);
+    oled.line(56, ay+19, 72,ay+19,OLED_CLEAR);
+    oled.line(56, ay+20, 72,ay+20,OLED_CLEAR);
+    oled.dot(56, ay+18, OLED_CLEAR);
+  oled.update();
+  if (ay<28){delay(1000); return;}
+  }
+}
