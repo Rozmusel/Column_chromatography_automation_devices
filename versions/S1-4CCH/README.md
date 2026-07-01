@@ -1,4 +1,4 @@
-# Прототип A1-4CCH
+# Прототип S1-4CCH
 **Separator for Column Chromatography v1**
 
 ## Назначение

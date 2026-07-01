@@ -1,4 +1,4 @@
-# Прототип A1-4CCH
+# Прототип A2-4CCH
 **Allocator for Column Chromatography v2**
 
 ## Назначение
