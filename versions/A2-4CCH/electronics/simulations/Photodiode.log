@@ -1,0 +1,37 @@
+LTspice 26.0.2 for Windows
+Circuit: C:\Users\aleks\YandexDisk\Рабочий стол\Column_chromatography_automation_devices\versions\A2-4CCH\electronics\simulations\Photodiode.net
+Start Time: Wed Jul 15 10:47:43 2026
+solver = Normal
+Maximum thread count: 12
+tnom = 27
+temp = 27
+method = trap
+Instance "u1:M25": Length shorter than recommended for a level 1 MOSFET.
+Instance "u1:M26": Length shorter than recommended for a level 1 MOSFET.
+Instance "u1:M53": Length shorter than recommended for a level 1 MOSFET.
+Instance "u1:M54": Length shorter than recommended for a level 1 MOSFET.
+Instance "u1:M24": Length shorter than recommended for a level 1 MOSFET.
+Instance "u1:M29": Length shorter than recommended for a level 1 MOSFET.
+Instance "u1:M52": Length shorter than recommended for a level 1 MOSFET.
+Instance "u1:M57": Length shorter than recommended for a level 1 MOSFET.
+Instance "u1:M27": Length shorter than recommended for a level 1 MOSFET.
+Instance "u1:M28": Length shorter than recommended for a level 1 MOSFET.
+Instance "u1:M33": Length shorter than recommended for a level 1 MOSFET.
+Instance "u1:M36": Length shorter than recommended for a level 1 MOSFET.
+Instance "u1:M55": Length shorter than recommended for a level 1 MOSFET.
+Instance "u1:M56": Length shorter than recommended for a level 1 MOSFET.
+Instance "u1:M58": Length shorter than recommended for a level 1 MOSFET.
+Instance "u1:M59": Length shorter than recommended for a level 1 MOSFET.
+Direct Newton iteration failed to find operating point.
+Starting Gmin stepping
+Gmin stepping failed to find operating point. Use".option gminsteps=0" to skip all Gmin stepping.
+Starting source stepping with srcstepmethod=0
+Source stepping succeeded in finding the operating point.
+
+Total elapsed time: 0.351 seconds.
+
+Files loaded:
+C:\Users\aleks\YandexDisk\Рабочий стол\Column_chromatography_automation_devices\versions\A2-4CCH\electronics\simulations\Photodiode.net
+C:\Users\aleks\AppData\Local\LTspice\lib\cmp\standard.dio
+C:\Users\aleks\YandexDisk\Рабочий стол\Column_chromatography_automation_devices\versions\A2-4CCH\electronics\simulations\OPAx381.LIB
+

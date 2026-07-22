@@ -1,4 +1,4 @@
-# Прототип A1-4CCH
+# Эксперимент A2-4CCH
 **Pivot axis**
 ![Pivot](media/Pivot_1.jpg)
 ## Назначение
