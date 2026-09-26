@@ -1,0 +1,11 @@
+Designator,Value,PartNumber,Comment,Footprint,Quantity
+
+"C1","6.8pF","CC0805KRX7R7BB104","Ceramic capacitor, 6.8pF, X7R, ±10%, 16V, 0805, -55...+125°C","CAP: 0805","1"
+"C2","1?F","CC0805KRX7R7BB104","Ceramic capacitor, 1?F, X7R, ±10%, 16V, 0805, -55...+125°C","CAP: 0805","1"
+"C5","0.1?F","CC0805KRX7R7BB104","Ceramic capacitor, 0.1?F, X7R, ±10%, 16V, 0805, -55...+125°C","CAP: 0805","1"
+"D1","","BPW34","BPW34","DIO_BPW34","1"
+"R1","1.2M","RC0805JR-07100RL","Resistor film, 1.2M, ±5%, 0805, 0.125W, -55...+125°C","RES: 0805","1"
+"R2","12k","RC0805JR-07100RL","Resistor film, 12k, ±5%, 0805, 0.125W, -55...+125°C","RES: 0805","1"
+"R3","390R","RC0805JR-07100RL","Resistor film, 390R, ±5%, 0805, 0.125W, -55...+125°C","RES: 0805","1"
+"U1","","OPA381","OPA381AIDGKR","SOP65P490X110-8N","1"
+"X1","","PLS-3R","Connector, 3pin, 2.54mm, 500VAC, 3A","CON: PLS-3R","1"
